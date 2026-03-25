@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI降重工具 - 颜色主题探索</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: linear-gradient(180deg, #f7f9fb 0%, #ecf1f4 100%);
+      color: #16232f;
+    }
+    .page { max-width: 1320px; margin: 0 auto; padding: 32px; }
+    .hero, .theme {
+      background: rgba(251, 252, 253, 0.94);
+      border: 1px solid #d3dde4;
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(22, 35, 47, 0.08);
+    }
+    .hero { padding: 28px; margin-bottom: 24px; }
+    .pill {
+      display: inline-flex; padding: 8px 12px; border-radius: 999px;
+      background: #dce7ee; color: #294b63; font-weight: 700; font-size: 13px;
+    }
+    h1 { margin: 16px 0 12px; font-size: 48px; line-height: 1.06; letter-spacing: -0.03em; }
+    p { color: #5d6a75; line-height: 1.76; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .theme { padding: 20px; }
+    .theme h2 { margin: 0 0 8px; font-size: 24px; }
+    .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 16px 0 18px; }
+    .swatch { border-radius: 16px; min-height: 88px; padding: 10px; color: rgba(255,255,255,0.92); font-size: 12px; display: flex; align-items: end; }
+    .surface { color: #16232f; border: 1px solid #d3dde4; }
+    .demo {
+      margin-top: 18px; border-radius: 18px; overflow: hidden; border: 1px solid #d3dde4;
+      background: #fff;
+    }
+    .demo-top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px; border-bottom: 1px solid #d3dde4;
+    }
+    .demo-main {
+      display: grid; grid-template-columns: 0.9fr 1.2fr 0.8fr; gap: 12px;
+      padding: 14px;
+    }
+    .box {
+      min-height: 70px; border-radius: 14px; padding: 12px;
+      border: 1px solid #d3dde4; background: #f4f7f9;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 14px; border-radius: 999px; font-weight: 700; font-size: 13px;
+    }
+    .legend { margin-top: 8px; font-size: 13px; color: #5d6a75; }
+    @media (max-width: 1100px) {
+      .grid, .demo-main { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .page { padding: 16px; }
+      h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="pill">颜色主题探索 / AI降重工具</span>
+      <h1>3 套颜色方向，帮助确认“冷静可信”该怎么落到界面上。</h1>
+      <p>这不是品牌定稿，而是围绕已经确认的视觉基础做出的主题探索。目标不是追求强烈 AI 感，而是让风险判断、建议采纳、处理状态和导出动作在高压场景下依然清楚、稳定、可信。</p>
+    </section>
+
+    <section class="grid">
+      <article class="theme">
+        <h2>主题 A：Slate Trust</h2>
+        <p>最接近当前默认方向。蓝灰为主，青绿色为辅助，整体偏稳定与专业，适合主工作台。</p>
+        <div class="swatches">
+          <div class="swatch surface" style="background:#f7f9fb;">#F7F9FB</div>
+          <div class="swatch" style="background:#294b63;">#294B63</div>
+          <div class="swatch" style="background:#5f8d8a;">#5F8D8A</div>
+          <div class="swatch" style="background:#b8793f;">#B8793F</div>
+          <div class="swatch" style="background:#476f59;">#476F59</div>
+        </div>
+        <div class="demo">
+          <div class="demo-top">
+            <strong>风险指挥台</strong>
+            <span class="btn" style="background:#294b63;color:#fff;">导出结果</span>
+          </div>
+          <div class="demo-main">
+            <div class="box">高风险段落<br /><span class="legend">Top 10 / 左侧列表</span></div>
+            <div class="box">原文 + 原因解释<br /><span class="legend">主阅读区</span></div>
+            <div class="box">建议比较<br /><span class="legend">采纳 / 回退</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="theme">
+        <h2>主题 B：Calm Academic</h2>
+        <p>蓝灰基础上加入更温和的米灰背景和较深的墨蓝，用学术与正式感来增强可信度。</p>
+        <div class="swatches">
+          <div class="swatch surface" style="background:#f5f3ee;">#F5F3EE</div>
+          <div class="swatch" style="background:#20384a;">#20384A</div>
+          <div class="swatch" style="background:#6e878b;">#6E878B</div>
+          <div class="swatch" style="background:#9f7849;">#9F7849</div>
+          <div class="swatch" style="background:#536f5f;">#536F5F</div>
+        </div>
+        <div class="demo">
+          <div class="demo-top" style="background:#f5f3ee;">
+            <strong>论文精修台</strong>
+            <span class="btn" style="background:#20384a;color:#fff;">采纳建议</span>
+          </div>
+          <div class="demo-main" style="background:#fbfaf7;">
+            <div class="box" style="background:#f4efe7;">风险列表</div>
+            <div class="box">原因解释与证据</div>
+            <div class="box">修改记录</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="theme">
+        <h2>主题 C：Clear Signal</h2>
+        <p>保持冷静底色，但增强状态色清晰度，更适合强调“处理中 / 已处理 / 待确认”的可视识别。</p>
+        <div class="swatches">
+          <div class="swatch surface" style="background:#f4f7f8;">#F4F7F8</div>
+          <div class="swatch" style="background:#31586f;">#31586F</div>
+          <div class="swatch" style="background:#4d8a82;">#4D8A82</div>
+          <div class="swatch" style="background:#bf8240;">#BF8240</div>
+          <div class="swatch" style="background:#3f7b60;">#3F7B60</div>
+        </div>
+        <div class="demo">
+          <div class="demo-top">
+            <strong>一键优化审查</strong>
+            <span class="btn" style="background:#3f7b60;color:#fff;">确认结果</span>
+          </div>
+          <div class="demo-main">
+            <div class="box" style="border-color:#bf8240;">待确认变化</div>
+            <div class="box" style="border-color:#4d8a82;">前后对比摘要</div>
+            <div class="box" style="border-color:#3f7b60;">已处理项</div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

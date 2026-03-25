@@ -1,0 +1,14 @@
+{
+  "name": "ai-rewrite-workbench",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm.cmd run build --workspaces --if-present --include-workspace-root=false",
+    "lint": "npm.cmd run lint --workspaces --if-present --include-workspace-root=false",
+    "test": "npm.cmd run test --workspaces --if-present --include-workspace-root=false"
+  }
+}

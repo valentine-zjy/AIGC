@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI降重工具 - 设计方向探索</title>
+  <style>
+    :root {
+      --bg: #edf1f4;
+      --surface: #fbfcfd;
+      --surface-2: #f3f6f8;
+      --ink: #16232f;
+      --muted: #5d6a75;
+      --line: #d3dde4;
+      --brand: #294b63;
+      --accent: #5f8d8a;
+      --warn: #b8793f;
+      --success: #476f59;
+      --space: 16px;
+      --radius: 18px;
+      --shadow: 0 18px 40px rgba(22, 35, 47, 0.08);
+      --font: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(95, 141, 138, 0.14), transparent 24%),
+        linear-gradient(180deg, #f7f9fb 0%, var(--bg) 100%);
+    }
+    .page { max-width: 1380px; margin: 0 auto; padding: 32px; }
+    .card {
+      background: rgba(251, 252, 253, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+    }
+    .hero { display: grid; grid-template-columns: 1.35fr 0.95fr; gap: 24px; }
+    .hero-main, .hero-side, .compare, .legend, .direction { padding: 24px; }
+    .pill, .chip, .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border-radius: 999px; font-weight: 700; font-size: 13px;
+    }
+    .pill { padding: 8px 12px; background: #dce7ee; color: var(--brand); }
+    h1 { margin: 18px 0 12px; font-size: 52px; line-height: 1.05; letter-spacing: -0.03em; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    h3 { margin: 0 0 10px; font-size: 28px; letter-spacing: -0.02em; }
+    p, li { color: var(--muted); line-height: 1.72; }
+    .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+    .note, .mini { padding: 16px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius); }
+    .note strong, .mini strong { display: block; margin-bottom: 8px; color: var(--brand); font-size: 13px; }
+    .hero-side ul { margin: 0; padding-left: 18px; display: grid; gap: 10px; }
+    .compare { margin: 24px 0; display: flex; justify-content: space-between; gap: 16px; align-items: center; background: rgba(22, 35, 47, 0.92); color: #eef3f5; }
+    .compare small { display: block; margin-bottom: 8px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 8px 10px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12); color: #f4f7f8; font-size: 13px;
+    }
+    .toolbar { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+    .toolbar-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip, .btn {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: rgba(251, 252, 253, 0.92);
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .chip.active, .btn.active, .btn.primary { background: var(--brand); color: white; border-color: var(--brand); }
+    .directions { display: grid; gap: 24px; }
+    .direction.favorite { border-color: rgba(71, 111, 89, 0.6); box-shadow: 0 22px 44px rgba(71, 111, 89, 0.14); }
+    .direction.hidden { display: none; }
+    .direction-top { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+    .preview {
+      min-height: 250px; border-radius: 24px; padding: 16px; color: white; overflow: hidden;
+      display: grid; gap: 12px;
+    }
+    .d1 { background: linear-gradient(145deg, #1e3342 0%, #314f61 55%, #5a817d 100%); }
+    .d2 { background: linear-gradient(145deg, #20303e 0%, #33495d 55%, #6b8188 100%); }
+    .d3 { background: linear-gradient(145deg, #18252f 0%, #26404e 55%, #806449 100%); }
+    .d4 { background: linear-gradient(145deg, #274454 0%, #3f6881 55%, #79a8a1 100%); }
+    .d5 { background: linear-gradient(145deg, #202b36 0%, #314654 55%, #516f7b 100%); }
+    .d6 { background: linear-gradient(145deg, #1b2c38 0%, #2e5367 55%, #4a7e77 100%); }
+    .bar, .box, .line {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+    }
+    .bar { height: 38px; }
+    .cols-3 { display: grid; grid-template-columns: 0.9fr 1.2fr 0.8fr; gap: 12px; flex: 1; }
+    .cols-2 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; flex: 1; }
+    .stack { display: grid; gap: 10px; min-height: 180px; padding: 12px; }
+    .box { min-height: 54px; }
+    .line { height: 10px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .meta .pill { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+    .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .direction-grid { margin-top: 20px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 16px; }
+    .legend-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .footer { margin-top: 24px; text-align: center; font-size: 13px; color: var(--muted); }
+    @media (max-width: 1180px) {
+      .hero, .direction-top, .direction-grid, .legend-grid { grid-template-columns: 1fr; }
+      .notes, .cols-3, .cols-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .page { padding: 16px; }
+      .compare { flex-direction: column; align-items: stretch; }
+      h1 { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <article class="card hero-main">
+        <span class="pill">设计方向探索 / AI降重工具</span>
+        <h1>6 个方向，判断这款工作台应该“稳”到什么程度。</h1>
+        <p>这些方向都基于同一套前提：冷静可信、中等密度、桌面优先、风险优先、先解释再改写、局部可控。真正要选的是：哪一种信息层级和工作台结构最能支撑“更敢交”和“更可控”。</p>
+        <div class="notes">
+          <div class="note"><strong>先看哪里</strong><span>首屏是不是直接告诉用户先改哪几段。</span></div>
+          <div class="note"><strong>再看什么</strong><span>原文、原因、建议、状态是否在一条清晰路径上。</span></div>
+          <div class="note"><strong>最后看感受</strong><span>用户会不会觉得自己更稳，而不是被系统接管。</span></div>
+        </div>
+      </article>
+      <aside class="card hero-side">
+        <h2>评估准则</h2>
+        <ul>
+          <li>风险列表是否足够靠前，且不会遮蔽正文判断。</li>
+          <li>“更自然且原意没变”的反馈是否容易被感知。</li>
+          <li>一键模式和工作台模式是否共享同一套可信语言。</li>
+          <li>风险色、成功色和处理中状态是否清楚但不刺眼。</li>
+          <li>是否方便加入误判标记、回退、比较、导出审查等能力。</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="card compare">
+      <div>
+        <small>当前比较</small>
+        <div class="tags" id="compareTags"><span class="tag">还没有加入比较的方向</span></div>
+      </div>
+      <button class="btn" id="clearCompare">清空比较</button>
+    </section>
+
+    <section class="toolbar">
+      <div class="toolbar-group" id="filters">
+        <button class="chip active" data-filter="all">全部方向</button>
+        <button class="chip" data-filter="command">偏风险指挥台</button>
+        <button class="chip" data-filter="editorial">偏编辑工作台</button>
+        <button class="chip" data-filter="guided">偏流程引导</button>
+      </div>
+      <div class="toolbar-group">
+        <button class="btn active" id="densityDefault">中等密度</button>
+        <button class="btn" id="densityAiry">更疏朗</button>
+      </div>
+    </section>
+
+    <section class="directions" id="directions">
+      <article class="card direction" data-family="command">
+        <div class="direction-top">
+          <div class="preview d1">
+            <div class="bar"></div>
+            <div class="cols-3">
+              <div class="stack"><div class="box"></div><div class="box"></div><div class="box"></div></div>
+              <div class="stack"><div class="line"></div><div class="box" style="min-height:92px"></div><div class="box"></div></div>
+              <div class="stack"><div class="box"></div><div class="box" style="min-height:118px"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D1</span><span class="pill">风险指挥台</span><span class="pill">三栏布局</span></div>
+            <h3>Calm Command Center</h3>
+            <p>最强调“先改哪里”。左栏是高风险段落，中栏是原文与原因，右栏是建议和采纳状态。适合把产品第一价值直接做成首页结构。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D1 Calm Command Center">设为首选</button>
+              <button class="btn compare-btn" data-direction="D1 Calm Command Center">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>“终于有人告诉我先改哪里。”</span></div>
+          <div class="mini"><strong>适合</strong><span>MVP 首页、主工作台、全局风险总览。</span></div>
+          <div class="mini"><strong>风险</strong><span>做得太硬时会偏后台系统。</span></div>
+        </div>
+      </article>
+
+      <article class="card direction" data-family="editorial">
+        <div class="direction-top">
+          <div class="preview d2">
+            <div class="bar"></div>
+            <div class="cols-2">
+              <div class="stack"><div class="box"></div><div class="box"></div><div class="box"></div></div>
+              <div class="stack"><div class="line"></div><div class="box" style="min-height:126px"></div><div class="box"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D2</span><span class="pill">编辑工作台</span><span class="pill">双栏布局</span></div>
+            <h3>Editorial Split Desk</h3>
+            <p>更像长文精修桌面。左侧是文档和风险导航，右侧是当前段落的原文、原因和建议对比。掌控感和作者感更强。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D2 Editorial Split Desk">设为首选</button>
+              <button class="btn compare-btn" data-direction="D2 Editorial Split Desk">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>更像“我在精修自己的文章”。</span></div>
+          <div class="mini"><strong>适合</strong><span>局部改写、对比、回退和人工确认。</span></div>
+          <div class="mini"><strong>风险</strong><span>首屏冲击力略弱于 D1。</span></div>
+        </div>
+      </article>
+
+      <article class="card direction" data-family="command">
+        <div class="direction-top">
+          <div class="preview d3">
+            <div class="bar"></div>
+            <div class="cols-3">
+              <div class="stack"><div class="box"></div><div class="box"></div><div class="box"></div></div>
+              <div class="stack"><div class="box" style="min-height:138px"></div><div class="line"></div><div class="line" style="width:68%"></div></div>
+              <div class="stack"><div class="box"></div><div class="box"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D3</span><span class="pill">证据优先</span><span class="pill">审阅感更强</span></div>
+            <h3>Evidence Ledger</h3>
+            <p>最强调“判断有依据”。每条风险都像一条审阅记录，原因、证据、建议和处理状态被做成清晰链条，特别适合论文场景。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D3 Evidence Ledger">设为首选</button>
+              <button class="btn compare-btn" data-direction="D3 Evidence Ledger">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>用户会觉得系统不是在瞎改。</span></div>
+          <div class="mini"><strong>适合</strong><span>论文、正式交付、保守型用户。</span></div>
+          <div class="mini"><strong>风险</strong><span>太重会削弱“被托住”的支持感。</span></div>
+        </div>
+      </article>
+
+      <article class="card direction" data-family="guided">
+        <div class="direction-top">
+          <div class="preview d4">
+            <div class="bar"></div>
+            <div class="cols-2">
+              <div class="stack"><div class="box" style="min-height:180px"></div></div>
+              <div class="stack"><div class="box"></div><div class="box"></div><div class="box"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D4</span><span class="pill">流程引导</span><span class="pill">新手友好</span></div>
+            <h3>Guided Review Lane</h3>
+            <p>把任务拆成扫描、确认、局部修改、导出四步。更像“带你一路改下去”的流程台，适合首次使用和时间很紧的用户。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D4 Guided Review Lane">设为首选</button>
+              <button class="btn compare-btn" data-direction="D4 Guided Review Lane">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>第一次使用时几乎不用学习。</span></div>
+          <div class="mini"><strong>适合</strong><span>onboarding、一键模式引导。</span></div>
+          <div class="mini"><strong>风险</strong><span>做成主方向会偏向导式，效率感不够强。</span></div>
+        </div>
+      </article>
+
+      <article class="card direction" data-family="editorial">
+        <div class="direction-top">
+          <div class="preview d5">
+            <div class="bar"></div>
+            <div class="cols-3">
+              <div class="stack"><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div></div>
+              <div class="stack"><div class="box" style="min-height:88px"></div><div class="box" style="min-height:88px"></div></div>
+              <div class="stack"><div class="box"></div><div class="box" style="min-height:132px"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D5</span><span class="pill">高密度</span><span class="pill">分析台</span></div>
+            <h3>Dense Analyst Grid</h3>
+            <p>在同一视野里尽量摆更多信息：风险、解释、建议、历史状态、筛选器都同时可见。适合重度用户和连续批量处理。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D5 Dense Analyst Grid">设为首选</button>
+              <button class="btn compare-btn" data-direction="D5 Dense Analyst Grid">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>切换少，扫风险速度快。</span></div>
+          <div class="mini"><strong>适合</strong><span>高频用户、二次回访、批量清理。</span></div>
+          <div class="mini"><strong>风险</strong><span>与你选定的中等密度略有冲突。</span></div>
+        </div>
+      </article>
+
+      <article class="card direction" data-family="guided">
+        <div class="direction-top">
+          <div class="preview d6">
+            <div class="bar"></div>
+            <div class="stack"><div class="box"></div><div class="box" style="min-height:102px"></div><div class="cols-2"><div class="box"></div><div class="box"></div></div></div>
+          </div>
+          <div>
+            <div class="meta"><span class="pill">D6</span><span class="pill">专注模式</span><span class="pill">单段沉浸</span></div>
+            <h3>Focus Compare Panel</h3>
+            <p>把注意力收束到“当前这一段”。适合强调“更自然且原意没变”的判断质量，是很强的二级专注视图。</p>
+            <div class="actions">
+              <button class="btn primary fav-btn" data-direction="D6 Focus Compare Panel">设为首选</button>
+              <button class="btn compare-btn" data-direction="D6 Focus Compare Panel">加入比较</button>
+            </div>
+          </div>
+        </div>
+        <div class="direction-grid">
+          <div class="mini"><strong>最强点</strong><span>对缓解焦虑和精修判断很强。</span></div>
+          <div class="mini"><strong>适合</strong><span>段落对比、深度改写确认、回退。</span></div>
+          <div class="mini"><strong>风险</strong><span>做成首页会弱化全文全局感。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card legend" style="margin-top:24px;">
+      <h2>快速判断</h2>
+      <div class="legend-grid">
+        <div class="mini"><strong>最像主方向</strong><span>D1。最符合“先改哪里”的主承诺。</span></div>
+        <div class="mini"><strong>最像精修视图</strong><span>D2。最适合原文、原因和建议对比。</span></div>
+        <div class="mini"><strong>最像论文模式</strong><span>D3。若你要更强的可信度，可借它的证据链表达。</span></div>
+        <div class="mini"><strong>最像辅助视图</strong><span>D6。适合做局部专注面板，而不是主首页。</span></div>
+      </div>
+    </section>
+
+    <p class="footer">建议优先比较 D1、D2、D3。它们最接近当前已经确认的产品价值：更敢交、更可控、先解释再改写。</p>
+  </main>
+
+  <script>
+    const compared = new Set();
+    const compareTags = document.getElementById('compareTags');
+    const clearCompare = document.getElementById('clearCompare');
+    const directions = [...document.querySelectorAll('.direction')];
+    const filterButtons = [...document.querySelectorAll('.chip[data-filter]')];
+    const densityDefault = document.getElementById('densityDefault');
+    const densityAiry = document.getElementById('densityAiry');
+
+    function renderCompare() {
+      compareTags.innerHTML = '';
+      if (compared.size === 0) {
+        compareTags.innerHTML = '<span class="tag">还没有加入比较的方向</span>';
+        return;
+      }
+      [...compared].forEach((name) => {
+        const item = document.createElement('span');
+        item.className = 'tag';
+        item.textContent = name;
+        compareTags.appendChild(item);
+      });
+    }
+
+    document.querySelectorAll('.compare-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.direction;
+        if (compared.has(name)) compared.delete(name);
+        else if (compared.size < 3) compared.add(name);
+        else {
+          compared.delete(compared.values().next().value);
+          compared.add(name);
+        }
+        renderCompare();
+      });
+    });
+
+    document.querySelectorAll('.fav-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        directions.forEach((card) => card.classList.remove('favorite'));
+        btn.closest('.direction').classList.add('favorite');
+      });
+    });
+
+    clearCompare.addEventListener('click', () => {
+      compared.clear();
+      renderCompare();
+    });
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach((item) => item.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        directions.forEach((card) => {
+          card.classList.toggle('hidden', filter !== 'all' && card.dataset.family !== filter);
+        });
+      });
+    });
+
+    densityDefault.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--space', '16px');
+      densityDefault.classList.add('active');
+      densityAiry.classList.remove('active');
+    });
+
+    densityAiry.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--space', '22px');
+      densityAiry.classList.add('active');
+      densityDefault.classList.remove('active');
+    });
+
+    renderCompare();
+  </script>
+</body>
+</html>

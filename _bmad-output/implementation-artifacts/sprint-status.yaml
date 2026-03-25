@@ -1,0 +1,92 @@
+﻿# generated: 2026-03-23 13:18:34 +08:00
+# last_updated: 2026-03-23 23:59:00 +08:00
+# project: AI闂勫秹鍣稿銉ュ徔
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: C:/codex_workplace/AI闂勫秹鍣稿銉ュ徔/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - review: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> review: Automatically when first story is created (via create-story)
+#   - review -> done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - review: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-23 13:18:34 +08:00
+last_updated: 2026-03-23 23:59:00 +08:00
+project: AI闂勫秹鍣稿銉ュ徔
+project_key: NOKEY
+tracking_system: file-system
+story_location: C:/codex_workplace/AI闂勫秹鍣稿銉ュ徔/_bmad-output/implementation-artifacts
+
+development_status:
+  epic-1: review
+  1-1-娴?starter-template-閸掓繂顫愰崠鏍€嶉惄顔荤瑢娴溠冩惂閸忋儱褰? review
+  1-2-閺傚洦銆傛稉濠佺炊閺嶏繝鐛欐稉搴″綀閻炲棗寮芥＃? review
+  1-3-娴犺濮熼崚娑樼紦閽€钘夌氨娑撳骸灏堕崥宥堫問闂傤喕绗傛稉瀣瀮: review
+  1-4-娴犺濮熼悩鑸碘偓浣藉缓闁挷绗屾径杈Е閸欏秹顩? review
+  1-5-閺嶇厧绱￠懗钘夊鏉堝湱鏅稉搴㈡殶閹诡喛顫夐崚娆掝嚛閺? review
+  1-6-瑜版挸澧犳禒璇插閺傚洦銆傛稉搴㈡殶閹诡喖鍨归梽? ready-for-dev: done
+  epic-1-retrospective: optional
+
+  epic-2: review
+  2-1-閹殿偅寮挎禒璇插缂傛牗甯撴稉搴ㄦ▉濞堢數濮搁幀浣稿晸閸? backlog: done
+  2-2-妫ｆ牞鐤?top-妞嬪酣娅撶紒鎾寸亯閸欐垵绔? backlog
+  2-3-妤傛﹢顥撻梽鈺傤唽閽€钘夊灙鐞涖劋绗岀粵娑⑩偓澶嬪笓鎼村繐浼愭担婊冨酱: backlog
+  2-4-濞堜絻鎯ょ拠濠冩焽闂堛垺婢樻稉搴″斧閺傚洣绗傛稉瀣瀮閺屻儳婀? backlog
+  2-5-pdf-閹殿偅寮跨紒鎾寸亯閺屻儳婀呮稉搴″涧鐠囨槒绔熼悾灞惧絹缁€? backlog
+  epic-2-retrospective: optional
+
+  epic-3: backlog
+  3-1-濞堜絻鎯ら弨鐟板晸瀵ら缚顔呴悽鐔稿灇娑撳孩鐦潏鍐ㄦ珤: backlog
+  3-2-濞堜絻鎯ょ痪褔鍣扮痪?閹锋帞绮锋稉搴＄暰閸氭垵绨查悽? backlog
+  3-3-娣囶喗鏁奸崢鍡楀蕉-婢跺嫮鎮婇悩鑸碘偓浣风瑢瀹告彃顦╅悶鍡橆唽閽€钘夋礀閻? backlog
+  3-4-韫囩晫鏆?鐠囶垰鍨介弽鍥唶娑撳孩婀径鍕倞妞ょ鎷烽煪? backlog
+  3-5-鐏炩偓闁劍鎸欓柨鈧稉搴″讲閹垹顦茬紓鏍帆閻樿埖鈧? backlog
+  epic-3-retrospective: optional
+
+  epic-4: backlog
+  4-1-娑撯偓闁款喕绱崠鏍у弳閸欙絼绗岄幎銈嗙埉鐎光剝鐓? backlog
+  4-2-娑撯偓闁款喕绱崠鏍波閺嬫粓顣╃憴鍫滅瑢閸欐ê瀵查幗妯款洣: backlog
+  4-3-娑撯偓闁款喕绱崠鏍ф倵閻ㄥ嫮鎴风紒顓犵翱娣囶喕绗岄弫缈犵秼閸ョ偤鈧偓: backlog
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-鐎电厧鍤崜宥囩波閺嬫粍鈧崵绮ㄦ稉搴☆嚤閸戦缚瀵栭崶瀵糕€樼拋? backlog
+  5-2-word-txt-缂佹挻鐏夌€电厧鍤悽鐔稿灇: backlog
+  5-3-閸欐甯舵稉瀣祰娑撳骸顕遍崙楦款唶瑜版洘鐓￠惇? backlog
+  5-4-缂佹挻鐏夊鈩冨壈鎼达缚绗岄幓鎰唉娣団€崇妇閸欏秹顩? backlog
+  epic-5-retrospective: optional
+
+  epic-6: backlog
+  6-1-鏉╂劘鎯€閸氬骸褰寸拋鍧楁６閹貉冨煑娑撳簼鎹㈤崝锛勫Ц閹焦鈧槒顫? backlog
+  6-2-婢惰精瑙︾拠濠冩焽鐠佹澘缍嶆稉搴濇崲閸旓繝鍣哥拠? backlog
+  6-3-閺堚偓鐏忓繐绻€鐟曚焦鐗遍張顒佺叀閻绗岄幒鎺楁鏉堝湱鏅幒褍鍩? backlog
+  6-4-闁插秴顦查梻顕€顣界拠鍡楀焼娑撳氦顫夐崚娆忎粻閻劍涓嶉悶? backlog
+  epic-6-retrospective: optional
+
+
+
+

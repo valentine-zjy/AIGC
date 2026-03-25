@@ -1,0 +1,17 @@
+import { z } from "zod";
+import { successEnvelopeSchema } from "./envelope.ts";
+export const oneClickStates = ["review", "processing", "ready"] as const;
+export const oneClickActions = ["start", "rollback"] as const;
+export const oneClickStateSchema = z.enum(oneClickStates);
+export const oneClickActionSchema = z.enum(oneClickActions);
+export const oneClickActionInputSchema = z.object({ action: oneClickActionSchema });
+export const oneClickPreviewItemSchema = z.object({ paragraphId: z.string().min(1), issueTypeLabel: z.string().min(1), strategyLabel: z.string().min(1), beforeText: z.string().min(1), afterText: z.string().min(1) });
+export const oneClickPreviewSchema = z.object({ optimizedCount: z.number().int().nonnegative(), remainingCount: z.number().int().nonnegative(), changeSummary: z.string().min(1), items: z.array(oneClickPreviewItemSchema) });
+export const oneClickDataSchema = z.object({ taskId: z.string().min(1), state: oneClickStateSchema, eligible: z.boolean(), blockedReason: z.string().min(1).nullable(), message: z.string().min(1), scopeSummary: z.string().min(1), guardrails: z.array(z.string().min(1)), canStart: z.boolean(), canRollback: z.boolean(), canContinueRefine: z.boolean(), startedAt: z.string().datetime().nullable(), completedAt: z.string().datetime().nullable(), rolledBackAt: z.string().datetime().nullable(), preview: oneClickPreviewSchema.nullable(), nextStep: z.string().min(1) });
+export const oneClickEnvelopeSchema = successEnvelopeSchema(oneClickDataSchema);
+export type OneClickState = z.infer<typeof oneClickStateSchema>;
+export type OneClickAction = z.infer<typeof oneClickActionSchema>;
+export type OneClickActionInput = z.infer<typeof oneClickActionInputSchema>;
+export type OneClickPreviewItem = z.infer<typeof oneClickPreviewItemSchema>;
+export type OneClickPreview = z.infer<typeof oneClickPreviewSchema>;
+export type OneClickData = z.infer<typeof oneClickDataSchema>;

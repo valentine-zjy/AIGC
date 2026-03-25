@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  --background: #eef3f5;
+  --foreground: #14202d;
+  --surface-base: #f8fbfc;
+  --surface-elevated: #ffffff;
+  --surface-accent: #e5eef3;
+  --surface-strong: #1d3448;
+  --ink-strong: #14202d;
+  --ink-body: #395165;
+  --ink-muted: #5e778c;
+  --accent-strong: #28577d;
+  --accent-strong-hover: #1f4665;
+  --accent-soft: #78a8c7;
+  --border-strong: rgba(20, 32, 45, 0.12);
+  --border-soft: rgba(40, 87, 125, 0.12);
+  --focus-ring: rgba(120, 168, 199, 0.42);
+  --shadow-card: 0 24px 60px rgba(20, 32, 45, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans:
+    "Segoe UI Variable",
+    "Segoe UI",
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Microsoft YaHei",
+    sans-serif;
+  --font-mono:
+    "Cascadia Code",
+    "JetBrains Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(120, 168, 199, 0.18), transparent 32%),
+    linear-gradient(180deg, #f6fafc 0%, #eef3f5 52%, #e6edf1 100%);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+:focus-visible {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
